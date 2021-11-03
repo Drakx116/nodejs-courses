@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/sources/reset.css">
+    <link rel="stylesheet" href="/sources/main.css">
+    <meta charset="UTF-8">
+    <title> Web Socket </title>
+</head>
+
+<body>
+    <div class="main-container">
+        <div id="message-container"></div>
+        <div class="form-container">
+            <form id="form-message" method="POST">
+                <label> Message
+                    <input autofocus id="input-message" type="text" name="message">
+                </label>
+                <input id="submit-message" type="submit" value="Send">
+            </form>
+        </div>
+    </div>
+
+    <script src="/sources/socket.io.js"></script>
+    <script type="application/javascript">
+        const socket = io();
+        const messages = document.getElementById('message-container');
+        const form = document.getElementById('form-message');
+        const input = document.getElementById('input-message');
+
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          let message = input.value;
+
+          if (message) {
+            socket.emit('chat', message);
+            input.value = '';
+          }
+        });
+
+        socket.on('chat', message => {
+          const div = document.createElement('div');
+          div.setAttribute('class', 'message');
+          div.innerText = message;
+          messages.appendChild(div);
+          messages.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
+</body>
+</html>

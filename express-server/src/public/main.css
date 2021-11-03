@@ -1,0 +1,73 @@
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#message-container {
+    overflow-y: scroll;
+    padding-bottom: 5em;
+}
+
+.message {
+    border-left: 4px solid teal;
+    font-family: sans-serif;
+    font-size: 16px;
+    padding: .75em .5em;
+    margin: .5em auto;
+    width: 60%;
+}
+
+
+
+/****************/
+/***** FORM *****/
+/****************/
+
+.form-container {
+    border-top: 2px solid teal;
+    padding: 1em 0;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    width: 100%;
+}
+
+label {
+    font-family: sans-serif;
+}
+
+#input-message {
+    border: 1px solid rgba(100, 100, 100, 50%);
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    padding: .5em .75em;
+    width: 50em;
+}
+
+
+#input-message:focus {
+    border: 1px solid black;
+    outline: none;
+}
+
+#submit-message {
+    background-color: teal;
+    border: 1px solid transparent;
+    color: white;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-size: 16px;
+    padding: .75em 1em;
+    transition: 0.2s ease-in-out;
+}
+
+#submit-message:hover {
+    background-color: white;
+    border-color: teal;
+    color: teal;
+}
