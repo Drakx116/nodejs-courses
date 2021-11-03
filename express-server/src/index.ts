@@ -1,29 +1,30 @@
 import express from "express";
 import http from "http";
 import path from 'path';
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
 import { User } from "./User";
 import { UserCollection } from "./UserCollection";
 import { randomUUID } from "crypto";
+import { WebSocketServer } from "./WebSocketServer";
 
-const server = express();
-const httpServer = http.createServer(server);
-const socketServer = new Server(httpServer);
+const expressServer = express();
+const httpServer = http.createServer(expressServer);
+const socketServer = new WebSocketServer({ httpServer}).server;
 
 const collection = new UserCollection();
 
 const port = 8000;
 
-server.get('/', (req: express.Request, res: express.Response) => {
+expressServer.get('/', (req: express.Request, res: express.Response) => {
   res.json({ 'data': 'Success' });
 });
 
-server.get('/hello/:name', (req: express.Request, res: express.Response) => {
+expressServer.get('/hello/:name', (req: express.Request, res: express.Response) => {
   res.statusCode = 200;
   res.json({ 'data': 'Hello ' + req.params.name });
 });
 
-server.get('/sources/:file', (req: express.Request, res: express.Response) => {
+expressServer.get('/sources/:file', (req: express.Request, res: express.Response) => {
   // Loads the entire file in the RAM
   // const file = fs.readFileSync('./uploads/profile.png');
 
