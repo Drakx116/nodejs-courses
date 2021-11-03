@@ -1,3 +1,8 @@
+:root {
+    --main-blue: #83BCFF;
+    --main-pink: #ECCBD9;
+}
+
 .main-container {
     height: 100vh;
     display: flex;
@@ -11,12 +16,24 @@
 }
 
 .message {
-    border-left: 4px solid teal;
-    font-family: sans-serif;
+    border-left: 4px solid var(--main-blue);
+    padding: .25em .5em;
+    margin: 1em auto;
+    width: 80%;
+}
+
+.author {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+}
+
+.content {
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    padding: .75em .5em;
-    margin: .5em auto;
-    width: 60%;
+    font-weight: lighter;
+    line-height: 24px;
 }
 
 
@@ -26,7 +43,7 @@
 /****************/
 
 .form-container {
-    border-top: 2px solid teal;
+    border-top: 2px solid var(--main-blue);
     padding: 1em 0;
     display: flex;
     justify-content: center;
@@ -37,12 +54,12 @@
 }
 
 label {
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 #input-message {
     border: 1px solid rgba(100, 100, 100, 50%);
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 24px;
     padding: .5em .75em;
@@ -56,18 +73,19 @@ label {
 }
 
 #submit-message {
-    background-color: teal;
+    background-color: var(--main-blue);
     border: 1px solid transparent;
     color: white;
     cursor: pointer;
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     padding: .75em 1em;
     transition: 0.2s ease-in-out;
+    outline: none;
 }
 
 #submit-message:hover {
     background-color: white;
-    border-color: teal;
-    color: teal;
+    border-color: var(--main-blue);
+    color: var(--main-blue);
 }

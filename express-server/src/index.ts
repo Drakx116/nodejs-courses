@@ -2,10 +2,15 @@ import express from "express";
 import http from "http";
 import path from 'path';
 import { Server, Socket } from "socket.io";
+import { User } from "./User";
+import { UserCollection } from "./UserCollection";
+import { randomUUID } from "crypto";
 
 const server = express();
 const httpServer = http.createServer(server);
 const socketServer = new Server(httpServer);
+
+const collection = new UserCollection();
 
 const port = 8000;
 
@@ -29,16 +34,22 @@ server.get('/sources/:file', (req: express.Request, res: express.Response) => {
   res.sendFile(path.join(__dirname, '..', 'src', 'public', req.params.file));
 });
 
-socketServer.on('connection', (socket: Socket) => {
-  console.log('A user is now logged.');
+socketServer.on('connection', (socket: Socket) =>
+{
+  const user: User = new User({
+    id: randomUUID({}).toString(),
+    collection: collection
+  });
 
-  socket.on('disconnect', reason => {
-    let message = 'A user has been disconnected.'
+  console.log('User ' + user.id + ' joined the lobby ! Hurray !');
+
+  socket.on('disconnect', (reason: string) => {
+    let label = 'User '  + user.id + ' just left the lobby. Bye Bye !'
     if (reason) {
-      message += ' ' + reason;
+      label += ' ' + reason;
     }
 
-    console.log(message);
+    console.warn(label);
   });
 
   socket.on('chat', (message: string) => {
@@ -47,5 +58,5 @@ socketServer.on('connection', (socket: Socket) => {
 });
 
 httpServer.listen(port, () => {
-  console.log('Server is listening on http://localhost:8000');
+  console.log('Server is listening on http://localhost:8000 \r\n');
 });

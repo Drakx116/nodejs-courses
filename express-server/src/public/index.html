@@ -3,6 +3,9 @@
 <head>
     <link rel="stylesheet" href="/sources/reset.css">
     <link rel="stylesheet" href="/sources/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title> Web Socket </title>
 </head>
@@ -40,7 +43,18 @@
         socket.on('chat', message => {
           const div = document.createElement('div');
           div.setAttribute('class', 'message');
-          div.innerText = message;
+
+          const author = document.createElement('div');
+          author.innerText = 'John Doe';
+          author.setAttribute('class', 'author');
+
+          const content = document.createElement('div');
+          content.innerText = message;
+          content.setAttribute('class', 'content');
+
+          div.appendChild(author);
+          div.appendChild(content);
+
           messages.appendChild(div);
           messages.scrollTo(0, document.body.scrollHeight);
         });
