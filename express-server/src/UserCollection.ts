@@ -4,7 +4,7 @@ import { UserInterface } from "./interfaces/UserInterface";
 
 export class UserCollection implements UserCollectionInterface
 {
-  private readonly users: Array<User>;
+  readonly users: Array<User>;
 
   constructor()
   {
@@ -12,7 +12,11 @@ export class UserCollection implements UserCollectionInterface
   }
 
   add(user: UserInterface): void {
-    this.users.push(user);
+    const alreadyExists = this.users.indexOf(user);
+
+    if (alreadyExists !== 0) {
+      this.users.push(user);
+    }
   }
 
   del(id: string): void {
@@ -26,14 +30,20 @@ export class UserCollection implements UserCollectionInterface
 
   get(id: string): UserInterface | false
   {
-    const userToRetrieve = this.users.find(user => user.id === id);
+    return this.users.find(user => user.id === id) || false;
+  }
 
-    return userToRetrieve || false;
+  public getDefault(): UserInterface {
+    return this.users[0];
   }
 
   public next = (): any => {};
 
   public get all(): Array<string> {
     return this.users.map(user => user.id);
+  }
+
+  getAll() {
+    return this.users;
   }
 }

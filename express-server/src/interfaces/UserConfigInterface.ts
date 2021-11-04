@@ -20,5 +20,5 @@ export interface UserConfigInterface
   /**
    * Collection à l'intérieur de laquelle est enregistré l'utilisateur
    */
-  readonly collection: UserCollectionInterface
+  readonly collection?: UserCollectionInterface
 }

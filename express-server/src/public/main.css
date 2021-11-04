@@ -4,36 +4,45 @@
 }
 
 .main-container {
+    display: flex;
+    flex-direction: row;
     height: 100vh;
+}
+
+.sidebar {
+    background-color: var(--main-blue);
+    padding: 1em;
+}
+
+.page-content {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     justify-content: space-between;
 }
 
 #message-container {
-    overflow-y: scroll;
-    padding-bottom: 5em;
+    overflow-y: auto;
 }
 
 .message {
     border-left: 4px solid var(--main-blue);
+    font-family: 'Roboto', sans-serif;
+    margin: 1em 2em;
     padding: .25em .5em;
-    margin: 1em auto;
     width: 80%;
 }
 
 .author {
-    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     font-weight: bold;
     line-height: 24px;
 }
 
 .content {
-    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: lighter;
-    line-height: 24px;
+    line-height: 28px;
 }
 
 
@@ -43,13 +52,15 @@
 /****************/
 
 .form-container {
-    border-top: 2px solid var(--main-blue);
-    padding: 1em 0;
-    display: flex;
-    justify-content: center;
-    position: absolute;
     bottom: 0;
-    background-color: white;
+    background-color: rgba(240, 240, 240, .2);
+    display: flex;
+    width: 100%;
+}
+
+#form-message {
+    display: flex;
+    padding: 2em;
     width: 100%;
 }
 
@@ -58,34 +69,35 @@ label {
 }
 
 #input-message {
-    border: 1px solid rgba(100, 100, 100, 50%);
+    border: 2px solid var(--main-blue);
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 24px;
     padding: .5em .75em;
-    width: 50em;
+    width: 100%;
 }
 
 
 #input-message:focus {
-    border: 1px solid black;
     outline: none;
 }
 
 #submit-message {
     background-color: var(--main-blue);
-    border: 1px solid transparent;
+    border: 2px solid var(--main-blue);
+    border-left: none;
     color: white;
     cursor: pointer;
+    display: flex;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    padding: .75em 1em;
-    transition: 0.2s ease-in-out;
+    line-height: 24px;
+    padding: .5em 1em;
     outline: none;
+    transition: 0.2s ease-in-out;
 }
 
 #submit-message:hover {
     background-color: white;
-    border-color: var(--main-blue);
     color: var(--main-blue);
 }

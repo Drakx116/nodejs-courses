@@ -12,14 +12,23 @@
 
 <body>
     <div class="main-container">
-        <div id="message-container"></div>
-        <div class="form-container">
-            <form id="form-message" method="POST">
-                <label> Message
-                    <input autofocus id="input-message" type="text" name="message">
-                </label>
-                <input id="submit-message" type="submit" value="Send">
-            </form>
+        <div class="sidebar">
+            <h1> Discuss </h1>
+        </div>
+        <div class="page-content">
+            <div id="message-container">
+                <div class="message">
+                    <div class="author"> DrakxBot - 01/01/1970 00:00 </div>
+                    <div class="content"> Salut ! Je suis un message d'exemple. </div>
+                </div>
+            </div>
+            <div class="form-container">
+                <form id="form-message" method="POST">
+                    <label for="input-message"></label>
+                    <input autofocus id="input-message" type="text" name="message" placeholder="Type your message here ...">
+                    <input id="submit-message" type="submit" value="Send">
+                </form>
+            </div>
         </div>
     </div>
 
@@ -40,13 +49,14 @@
           }
         });
 
-        socket.on('chat', data => {
-          console.log(data);
+        socket.on('chat', json => {
+          const data = JSON.parse(json);
+
           const message = document.createElement('div');
           message.setAttribute('class', 'message');
 
           const author = document.createElement('div');
-          author.innerText = data.user.id + ' - ' + formatDate(data.timestamp);
+          author.innerText = data.pseudo || data.user.id + ' - ' + formatDate(data.timestamp);
           author.setAttribute('class', 'author');
 
           const content = document.createElement('div');

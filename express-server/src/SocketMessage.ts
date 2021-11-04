@@ -19,14 +19,16 @@ export class SocketMessage implements SocketMessageInterface
     this.timestamp = Date.now();
   }
 
-  public serialize = () => {
+  public serialize() {
     return {
-      'message': this.msg,
-      'timestamp': this.timestamp,
-      'user': {
-        'id': this.user.id,
-        'pseudo': this.user.pseudo
-      },
-    };
+      message: this.msg,
+      room: this.roomId,
+      timestamp: this.timestamp,
+      user: {
+        id: this.user.id,
+        pseudo: this.user.pseudo,
+        avatar: this.user.imgUrl
+      }
+    }
   }
 }

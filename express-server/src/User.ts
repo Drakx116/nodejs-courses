@@ -1,6 +1,7 @@
 import { UserInterface } from "./interfaces/UserInterface";
 import { UserCollectionInterface } from "./interfaces/UserCollectionInterface";
 import { UserConfigInterface } from "./interfaces/UserConfigInterface";
+import { UserCollection } from "./UserCollection";
 
 export class User implements UserInterface
 {
@@ -13,7 +14,8 @@ export class User implements UserInterface
   constructor(config: UserConfigInterface)
   {
     this.id = config.id;
-    this.collection = config.collection;
+    this.collection = config.collection || new UserCollection();
+    this.pseudo = config.pseudo;
 
     this.collection.add(this);
   }
