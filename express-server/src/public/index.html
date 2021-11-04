@@ -35,29 +35,41 @@
           let message = input.value;
 
           if (message) {
-            socket.emit('chat', message);
+            socket.emit('chat', { message, 'id': socket.id });
             input.value = '';
           }
         });
 
-        socket.on('chat', message => {
-          const div = document.createElement('div');
-          div.setAttribute('class', 'message');
+        socket.on('chat', data => {
+          console.log(data);
+          const message = document.createElement('div');
+          message.setAttribute('class', 'message');
 
           const author = document.createElement('div');
-          author.innerText = 'John Doe';
+          author.innerText = data.user.id + ' - ' + formatDate(data.timestamp);
           author.setAttribute('class', 'author');
 
           const content = document.createElement('div');
-          content.innerText = message;
+          content.innerText = data.message;
           content.setAttribute('class', 'content');
 
-          div.appendChild(author);
-          div.appendChild(content);
+          message.appendChild(author);
+          message.appendChild(content);
 
-          messages.appendChild(div);
+          messages.appendChild(message);
           messages.scrollTo(0, document.body.scrollHeight);
         });
+
+        const formatDate = (timestamp) => {
+          const date = new Date(timestamp);
+
+          return formatDatePart(date.getDay()) + '/' + formatDatePart(date.getMonth()) + '/' + date.getFullYear() + ' '
+            + formatDatePart(date.getHours()) + ':' + formatDatePart(date.getMinutes());
+        }
+
+        const formatDatePart = (part) => {
+          return (part > 0 && part < 10) ? '0' + part : part;
+        }
     </script>
 </body>
 </html>
