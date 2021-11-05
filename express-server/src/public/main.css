@@ -9,10 +9,61 @@
     height: 100vh;
 }
 
+
+
+/*******************/
+/***** SIDEBAR *****/
+/*******************/
+
 .sidebar {
     background-color: var(--main-blue);
     padding: 1em;
+    overflow-y: auto;
 }
+
+.sidebar > h1 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    line-height: 32px;
+    text-align: center;
+}
+
+#rooms {
+    margin: 1em .5em;
+}
+
+.room {
+    align-items: center;
+    border: 2px solid transparent;
+    display: flex;
+    margin: .5em 0;
+}
+
+.room-picture {
+    background-color: white;
+    border-radius: .5em;
+    cursor: pointer;
+    height: 48px;
+    padding: .25em;
+    object-fit: contain;
+    width: 48px;
+}
+
+.room-name {
+
+}
+
+
+.current-room {
+    border-radius: .5em;
+    border-color: black;
+    transition: .2s ease-out;
+}
+
+
+/************************/
+/***** MESSAGE ZONE *****/
+/************************/
 
 .page-content {
     display: flex;
@@ -21,14 +72,25 @@
     justify-content: space-between;
 }
 
+#room-title {
+    border-bottom: 2px solid var(--main-blue);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 32px;
+    font-weight: bold;
+    padding: 1em;
+    text-align: center;
+}
+
 #message-container {
+    flex-grow: 1;
     overflow-y: auto;
 }
 
 .message {
-    border-left: 4px solid var(--main-blue);
+    border-left: 2px solid var(--main-blue);
     font-family: 'Roboto', sans-serif;
-    margin: 1em 2em;
+    margin: 1em;
     padding: .25em .5em;
     width: 80%;
 }

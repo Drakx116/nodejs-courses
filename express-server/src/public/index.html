@@ -11,75 +11,116 @@
 </head>
 
 <body>
-    <div class="main-container">
-        <div class="sidebar">
-            <h1> Discuss </h1>
+<div class="main-container">
+    <div class="sidebar">
+        <h1> Discuss </h1>
+        <div id="rooms"></div>
+    </div>
+    <div class="page-content">
+        <div id="room-title"> Symfony </div>
+        <div id="message-container">
+            <div class="message">
+                <div class="author"> DrakxBot - 01/01/1970 00:00 </div>
+                <div class="content"> Salut ! Je suis un message d'exemple. </div>
+            </div>
         </div>
-        <div class="page-content">
-            <div id="message-container">
-                <div class="message">
-                    <div class="author"> DrakxBot - 01/01/1970 00:00 </div>
-                    <div class="content"> Salut ! Je suis un message d'exemple. </div>
-                </div>
-            </div>
-            <div class="form-container">
-                <form id="form-message" method="POST">
-                    <label for="input-message"></label>
-                    <input autofocus id="input-message" type="text" name="message" placeholder="Type your message here ...">
-                    <input id="submit-message" type="submit" value="Send">
-                </form>
-            </div>
+        <div class="form-container">
+            <form id="form-message" method="POST">
+                <label for="input-message"></label>
+                <input autofocus id="input-message" type="text" name="message" placeholder="Type your message here ...">
+                <input id="submit-message" type="submit" value="Send">
+            </form>
         </div>
     </div>
+</div>
 
-    <script src="/sources/socket.io.js"></script>
-    <script type="application/javascript">
-        const socket = io();
-        const messages = document.getElementById('message-container');
-        const form = document.getElementById('form-message');
-        const input = document.getElementById('input-message');
+<script src="/sources/socket.io.js"></script>
 
-        form.addEventListener('submit', e => {
-          e.preventDefault();
-          let message = input.value;
+<!-- ROOMS HANDLING -->
+<script type="application/javascript">
+  const socket = io();
+  const event = 'rooms';
 
-          if (message) {
-            socket.emit('chat', { message, 'id': socket.id });
-            input.value = '';
-          }
-        });
+  const rooms = document.getElementById('rooms');
 
-        socket.on('chat', json => {
-          const data = JSON.parse(json);
+  // rooms.innerHTML = '';
 
-          const message = document.createElement('div');
-          message.setAttribute('class', 'message');
+  socket.emit(event, {});
 
-          const author = document.createElement('div');
-          author.innerText = data.pseudo || data.user.id + ' - ' + formatDate(data.timestamp);
-          author.setAttribute('class', 'author');
+  socket.on('rooms', json => {
+    const data = JSON.parse(json);
+    const rooms = document.getElementById('rooms');
 
-          const content = document.createElement('div');
-          content.innerText = data.message;
-          content.setAttribute('class', 'content');
+    // Clears all rooms
+    rooms.innerHTML = '';
 
-          message.appendChild(author);
-          message.appendChild(content);
+    data.forEach((room, index) => {
+      console.log(room.urlImage);
 
-          messages.appendChild(message);
-          messages.scrollTo(0, document.body.scrollHeight);
-        });
+      const roomElement = document.createElement('div');
+      const pictureElement = document.createElement('img');
 
-        const formatDate = (timestamp) => {
-          const date = new Date(timestamp);
+      roomElement.setAttribute('class', (index === 0) ? 'room current-room' : 'room');
 
-          return formatDatePart(date.getDay()) + '/' + formatDatePart(date.getMonth()) + '/' + date.getFullYear() + ' '
-            + formatDatePart(date.getHours()) + ':' + formatDatePart(date.getMinutes());
-        }
+      pictureElement.setAttribute('class', 'room-picture');
+      pictureElement.setAttribute('title', room.title);
+      pictureElement.setAttribute('alt', room.title);
+      pictureElement.setAttribute('src', room.urlImage || 'profile.png');
 
-        const formatDatePart = (part) => {
-          return (part > 0 && part < 10) ? '0' + part : part;
-        }
-    </script>
+      roomElement.appendChild(pictureElement);
+      rooms.appendChild(roomElement);
+    });
+  });
+</script>
+
+<!-- FORM HANDLING -->
+<script type="application/javascript">
+  // The *socket* object is already defined in the previous script
+  const messages = document.getElementById('message-container');
+  const form = document.getElementById('form-message');
+  const input = document.getElementById('input-message');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let message = input.value;
+
+    if (message) {
+      socket.emit('chat', { message, 'id': socket.id });
+      input.value = '';
+    }
+  });
+
+  socket.on('chat', json => {
+    const data = JSON.parse(json);
+
+    const message = document.createElement('div');
+    message.setAttribute('class', 'message');
+
+    const author = document.createElement('div');
+    author.innerText = data.pseudo || data.user.id + ' - ' + formatDate(data.timestamp);
+    author.setAttribute('class', 'author');
+
+    const content = document.createElement('div');
+    content.innerText = data.message;
+    content.setAttribute('class', 'content');
+
+    message.appendChild(author);
+    message.appendChild(content);
+
+    messages.appendChild(message);
+    messages.scrollTo(0, document.body.scrollHeight);
+  });
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+
+    return formatDatePart(date.getDay()) + '/' + formatDatePart(date.getMonth()) + '/' + date.getFullYear() + ' '
+      + formatDatePart(date.getHours()) + ':' + formatDatePart(date.getMinutes());
+  }
+
+  const formatDatePart = (part) => {
+    return (part > 0 && part < 10) ? '0' + part : part;
+  }
+</script>
 </body>
 </html>

@@ -34,9 +34,11 @@ export class WebSocketServer implements WebSocketServerInterface {
     this._currentUser = newUser;
     this.onlineUsers.add(newUser);
 
-    const newRoom = new Room({ title: 'Landing Area' });
-    this._currentRoom = newRoom;
-    this.rooms.add(newRoom);
+    const symfonyRoom = new Room({ title: 'Symfony', urlImage: 'symfony.png' });
+    const reactRoom = new Room({ title: 'React', urlImage: 'react.png' });
+    this._currentRoom = symfonyRoom;
+    this.rooms.add(symfonyRoom);
+    this.rooms.add(reactRoom);
   }
 
   private _handleUserConnexions = () => {
@@ -74,9 +76,15 @@ export class WebSocketServer implements WebSocketServerInterface {
         console.warn(label);
       });
 
-      socket.on('chat', (data: { message: string, id: string }) => {
+      socket.on(Channel.chat, (data: { message: string, id: string }) => {
         socket.emit('chat', JSON.stringify(
           new SocketMessage(data.message, this._currentUser).serialize()
+        ));
+      });
+
+      socket.on(Channel.rooms, () =>{
+        socket.emit(Channel.rooms, JSON.stringify(
+          this.rooms.getAll()
         ));
       });
     });
