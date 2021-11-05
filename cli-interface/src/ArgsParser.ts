@@ -1,7 +1,7 @@
 import { isIPv4 } from "net";
-import {ArgumentParserInterface} from "./interfaces/ArgumentParserInterface";
+import { IArgsParser } from "./interfaces/IArgsParser";
 
-export class ArgsParser implements ArgumentParserInterface
+export class ArgsParser implements IArgsParser
 {
   private readonly argv: string[];
 

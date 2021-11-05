@@ -1,13 +1,13 @@
 import net from 'net';
-import { ServerInterface } from './interfaces/ServerInterface';
-import { ServerConfigInterface } from "./interfaces/ServerConfigInterface";
+import { IServer } from './interfaces/IServer';
+import { IServerConfig } from "./interfaces/IServerConfig";
 
-export class Server implements ServerInterface
+export class Server implements IServer
 {
   private instance: net.Server;
   readonly listeningPort: number;
 
-  constructor(config: ServerConfigInterface) {
+  constructor(config: IServerConfig) {
     this.listeningPort = config.listeningPort;
     this.onData = config.onData;
 

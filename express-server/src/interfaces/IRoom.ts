@@ -1,4 +1,4 @@
-export interface RoomInterface
+export interface IRoom
 {
   /**
    * Identifiant du salon

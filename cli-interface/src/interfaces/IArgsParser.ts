@@ -1,4 +1,4 @@
-export interface ArgumentParserInterface
+export interface IArgsParser
 {
   /**
    * Le programme a-t-il été appelé en tant que Serveur ?

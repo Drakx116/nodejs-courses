@@ -1,12 +1,12 @@
-import {ClientInterface} from "./interfaces/ClientInterface";
-import {ClientConfigInterface} from "./interfaces/ClientConfigInterface";
+import {IClient} from "./interfaces/IClient";
+import {IClientConfig} from "./interfaces/IClientConfig";
 import net from "net";
 
-export class Client implements ClientInterface
+export class Client implements IClient
 {
   private connexion: net.Socket;
 
-  constructor(config: ClientConfigInterface)
+  constructor(config: IClientConfig)
   {
     this.connexion = net.createConnection(config.port, config.address);
   }
@@ -20,7 +20,6 @@ export class Client implements ClientInterface
         reject: (value: false) => void
       ) => {
       this.connexion.on('data', (data) => {
-        console.log(data);
         try {
           resolve(Date.now() - start);
           console.log('PING');

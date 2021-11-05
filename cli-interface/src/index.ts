@@ -1,7 +1,7 @@
 import { ArgsParser } from "./ArgsParser";
 import { Server } from "./Server";
 import net from "net";
-import { ServerInterface } from "./interfaces/ServerInterface";
+import { IServer } from "./interfaces/IServer";
 import { Client } from "./Client";
 
 const parser = new ArgsParser(process.argv);
@@ -10,7 +10,7 @@ const port = parser.getListeningPort();
 if (parser.isServer()) {
   console.log(`The server tries to listen on localhost:${port} ...`);
 
-  const server: ServerInterface = new Server({
+  const server: IServer = new Server({
     listeningPort: port,
     onData(socket: net.Socket, data: string): void {
       if (data === "PING") {

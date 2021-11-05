@@ -1,15 +1,15 @@
-import { SocketMessageInterface } from "./interfaces/SocketMessageInterface";
-import { UserInterface } from "./interfaces/UserInterface";
+import { IMsg } from "./interfaces/IMsg";
+import { IUser } from "./interfaces/IUser";
 
-export class SocketMessage implements SocketMessageInterface
+export class SocketMessage implements IMsg
 {
   readonly msg: string;
   readonly roomId: string;
   readonly timestamp: number;
   readonly userId: string;
-  readonly user: UserInterface;
+  readonly user: IUser;
 
-  constructor(message: string, user: UserInterface, roomId: string) {
+  constructor(message: string, user: IUser, roomId: string) {
     this.msg = message;
     this.user = user;
     this.userId = user.id;

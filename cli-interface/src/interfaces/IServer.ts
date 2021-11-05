@@ -1,6 +1,6 @@
 import net from "net";
 
-export interface ServerInterface {
+export interface IServer {
   /**
    * Numéro de port sur lequel écoutera le serveur
    * Cette valeur est initialisée par le constructeur doit être en lecture seule au runtime

@@ -1,6 +1,6 @@
-import { UserCollectionInterface } from "./UserCollectionInterface";
+import { IUserCollection } from "./IUserCollection";
 
-export interface UserInterface
+export interface IUser
 {
   /**
    * Identifiant de l'utilisateur
@@ -20,7 +20,7 @@ export interface UserInterface
   /**
    * Collection à l'intérieur de laquelle est enregistré l'utilisateur
    */
-  collection: UserCollectionInterface
+  collection: IUserCollection
 
   /**
    * Liste des identifiants des salons que l'utilisateur à joint

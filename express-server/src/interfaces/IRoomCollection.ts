@@ -1,6 +1,6 @@
-import { RoomInterface } from "./RoomInterface";
+import { IRoom } from "./IRoom";
 
-export interface RoomCollectionInterface
+export interface IRoomCollection
 {
   /**
    * Liste des identifiants des salons
@@ -10,12 +10,12 @@ export interface RoomCollectionInterface
   /**
    * Récupération des données d'un salon dont l'identifiant est `id`
    */
-  get (id: string): RoomInterface | false
+  get (id: string): IRoom | false
 
   /**
    * Ajoute un salon aux salons connus de cette collection
    */
-  add (room: RoomInterface): void
+  add (room: IRoom): void
 
   /**
    * Supprime de cette collection un salon avec l'identifiant `id` donné

@@ -1,6 +1,6 @@
-import { UserInterface } from "./UserInterface";
+import { IUser } from "./IUser";
 
-export interface UserCollectionInterface extends Iterator<UserInterface>
+export interface IUserCollection extends Iterator<IUser>
 {
   /**
    * Liste des identifiants des utilisateurs
@@ -10,12 +10,12 @@ export interface UserCollectionInterface extends Iterator<UserInterface>
   /**
    * Récupération des données d'un utilisateur dont l'identifiant est `id`
    */
-  get (id: string): UserInterface | false
+  get (id: string): IUser | false
 
   /**
    * Ajoute un utilisateur aux utilisateurs connus de cette collection
    */
-  add (user: UserInterface): void
+  add (user: IUser): void
 
   /**
    * Supprime de cette collection un utilisateur avec l'identifiant `id` donné

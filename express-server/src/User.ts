@@ -1,17 +1,17 @@
-import { UserInterface } from "./interfaces/UserInterface";
-import { UserCollectionInterface } from "./interfaces/UserCollectionInterface";
-import { UserConfigInterface } from "./interfaces/UserConfigInterface";
+import { IUser } from "./interfaces/IUser";
+import { IUserCollection } from "./interfaces/IUserCollection";
+import { IUserConfig } from "./interfaces/IUserConfig";
 import { UserCollection } from "./UserCollection";
 
-export class User implements UserInterface
+export class User implements IUser
 {
   id: string;
   pseudo?: string | undefined;
   imgUrl?: string | undefined;
   rooms?: string[] | undefined;
-  collection: UserCollectionInterface;
+  collection: IUserCollection;
 
-  constructor(config: UserConfigInterface)
+  constructor(config: IUserConfig)
   {
     this.id = config.id;
     this.collection = config.collection || new UserCollection();

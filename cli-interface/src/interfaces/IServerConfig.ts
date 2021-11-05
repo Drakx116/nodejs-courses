@@ -1,6 +1,6 @@
 import net from "net";
 
-export interface ServerConfigInterface
+export interface IServerConfig
 {
   /**
    * Numéro de port que le serveur doit écouter sur localhost

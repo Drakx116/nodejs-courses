@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
-import { WebSocketServerInterface } from "./interfaces/WebSocketServerInterface";
-import { WebSocketServerConfigInterface } from "./interfaces/WebSocketServerConfigInterface";
+import { IWSServer } from "./interfaces/IWSServer";
+import { IWSServerConfig } from "./interfaces/IWSServerConfig";
 import { User } from "./User";
 import { SocketMessage } from "./SocketMessage";
 import { UserCollection } from "./UserCollection";
@@ -9,7 +9,7 @@ import { RoomCollection } from "./RoomCollection";
 import { Room } from "./Room";
 import { Channel } from "./enum/channel";
 
-export class WebSocketServer implements WebSocketServerInterface {
+export class WebSocketServer implements IWSServer {
   readonly server: Server;
   readonly onlineUsers: UserCollection;
   readonly rooms: RoomCollection;
@@ -18,7 +18,7 @@ export class WebSocketServer implements WebSocketServerInterface {
 
   private log: (...args: any[]) => void;
 
-  constructor(config: WebSocketServerConfigInterface) {
+  constructor(config: IWSServerConfig) {
     this.server = new Server(config.httpServer);
     this.log = config.log || console.log;
     this.onlineUsers = new UserCollection();

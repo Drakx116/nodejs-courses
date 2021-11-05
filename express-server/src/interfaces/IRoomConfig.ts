@@ -1,6 +1,6 @@
-import { UserCollectionInterface } from "./UserCollectionInterface";
+import { IUserCollection } from "./IUserCollection";
 
-export interface RoomConfigInterface
+export interface IRoomConfig
 {
   /**
    * Identifiant du salon
@@ -26,7 +26,7 @@ export interface RoomConfigInterface
   /**
    * Collection des utilisateurs utilisée par le Web Socket Server
    */
-  readonly usersCollection?: UserCollectionInterface
+  readonly usersCollection?: IUserCollection
 
   /**
    * Liste des identifiants des utilisateurs qui sont initialement joint au salon courant

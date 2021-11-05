@@ -1,10 +1,10 @@
 import { v4 as uuid4 } from 'uuid';
 
-import { RoomInterface } from "./interfaces/RoomInterface";
-import { RoomConfigInterface } from "./interfaces/RoomConfigInterface";
+import { IRoom } from "./interfaces/IRoom";
+import { IRoomConfig } from "./interfaces/IRoomConfig";
 import { SocketMessage } from "./SocketMessage";
 
-export class Room implements RoomInterface
+export class Room implements IRoom
 {
   readonly adminId: string | false;
   readonly id: string;
@@ -14,7 +14,7 @@ export class Room implements RoomInterface
   readonly urlImage: string | false;
   private readonly messages: Array<SocketMessage>;
 
-  constructor(config: RoomConfigInterface, isPublic: boolean = true) {
+  constructor(config: IRoomConfig, isPublic: boolean = true) {
     this.id = uuid4();
     this.joinedUsers = [];
     this.public = isPublic;

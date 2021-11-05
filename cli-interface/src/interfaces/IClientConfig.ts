@@ -1,4 +1,4 @@
-export interface ClientConfigInterface
+export interface IClientConfig
 {
   /**
    * Adresse du serveur à pinguer

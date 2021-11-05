@@ -1,6 +1,6 @@
-import { UserCollectionInterface } from "./UserCollectionInterface";
+import { IUserCollection } from "./IUserCollection";
 
-export interface UserConfigInterface
+export interface IUserConfig
 {
   /**
    * Identifiant de l'utilisateur
@@ -20,5 +20,5 @@ export interface UserConfigInterface
   /**
    * Collection à l'intérieur de laquelle est enregistré l'utilisateur
    */
-  readonly collection?: UserCollectionInterface
+  readonly collection?: IUserCollection
 }

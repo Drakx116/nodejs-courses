@@ -1,9 +1,9 @@
-import { RoomCollectionInterface } from "./interfaces/RoomCollectionInterface";
-import { RoomInterface } from "./interfaces/RoomInterface";
+import { IRoomCollection } from "./interfaces/IRoomCollection";
+import { IRoom } from "./interfaces/IRoom";
 import { Room } from "./Room";
 import { SocketMessage } from "./SocketMessage";
 
-export class RoomCollection implements RoomCollectionInterface
+export class RoomCollection implements IRoomCollection
 {
   readonly all: Array<string>;
   readonly rooms: Array<Room>;

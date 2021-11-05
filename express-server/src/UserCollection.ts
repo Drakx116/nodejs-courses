@@ -1,8 +1,8 @@
 import { User } from "./User";
-import { UserCollectionInterface } from "./interfaces/UserCollectionInterface";
-import { UserInterface } from "./interfaces/UserInterface";
+import { IUserCollection } from "./interfaces/IUserCollection";
+import { IUser } from "./interfaces/IUser";
 
-export class UserCollection implements UserCollectionInterface
+export class UserCollection implements IUserCollection
 {
   readonly users: Array<User>;
 
@@ -11,7 +11,7 @@ export class UserCollection implements UserCollectionInterface
     this.users = [];
   }
 
-  add(user: UserInterface): void {
+  add(user: IUser): void {
     const alreadyExists = this.users.indexOf(user);
 
     if (alreadyExists !== 0) {
@@ -28,12 +28,12 @@ export class UserCollection implements UserCollectionInterface
     }
   }
 
-  get(id: string): UserInterface | false
+  get(id: string): IUser | false
   {
     return this.users.find(user => user.id === id) || false;
   }
 
-  public getDefault(): UserInterface {
+  public getDefault(): IUser {
     return this.users[0];
   }
 
