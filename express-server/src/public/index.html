@@ -18,12 +18,7 @@
     </div>
     <div class="page-content">
         <div id="room-title"> Symfony </div>
-        <div id="message-container">
-            <div class="message">
-                <div class="author"> DrakxBot - 01/01/1970 00:00 </div>
-                <div class="content"> Salut ! Je suis un message d'exemple. </div>
-            </div>
-        </div>
+        <div id="message-container"></div>
         <div class="form-container">
             <form id="form-message" method="POST">
                 <label for="input-message"></label>
@@ -39,14 +34,10 @@
 <!-- ROOMS HANDLING -->
 <script type="application/javascript">
   const socket = io();
-  const event = 'rooms';
-
   const rooms = document.getElementById('rooms');
+  const messages = document.getElementById('message-container');
 
-  // rooms.innerHTML = '';
-
-  socket.emit(event, {});
-
+  // * Generates rooms
   socket.on('rooms', json => {
     const data = JSON.parse(json);
     const rooms = document.getElementById('rooms');
@@ -55,44 +46,55 @@
     rooms.innerHTML = '';
 
     data.forEach((room, index) => {
-      console.log(room.urlImage);
-
       const roomElement = document.createElement('div');
       const pictureElement = document.createElement('img');
 
       roomElement.setAttribute('class', (index === 0) ? 'room current-room' : 'room');
+      roomElement.dataset.id = room.id;
+
+      roomElement.addEventListener('click', () => {
+        const selectedRoomId = document.getElementsByClassName('current-room')[0].dataset.id;
+        const currentRoomId = roomElement.dataset.id;
+
+        if (selectedRoomId === currentRoomId) {
+          return;
+        }
+
+        Array.from(document.getElementsByClassName('room')).forEach(element => {
+          element.classList.remove('current-room');
+        });
+
+        roomElement.setAttribute('class', 'room current-room');
+        document.getElementById('room-title').textContent = roomElement.children[0].title;
+
+        socket.emit('room-update', currentRoomId);
+      });
 
       pictureElement.setAttribute('class', 'room-picture');
       pictureElement.setAttribute('title', room.title);
       pictureElement.setAttribute('alt', room.title);
-      pictureElement.setAttribute('src', room.urlImage || 'profile.png');
+      pictureElement.setAttribute('src', room.image || 'profile.png');
 
       roomElement.appendChild(pictureElement);
       rooms.appendChild(roomElement);
     });
   });
-</script>
 
-<!-- FORM HANDLING -->
-<script type="application/javascript">
-  // The *socket* object is already defined in the previous script
-  const messages = document.getElementById('message-container');
-  const form = document.getElementById('form-message');
-  const input = document.getElementById('input-message');
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    let message = input.value;
-
-    if (message) {
-      socket.emit('chat', { message, 'id': socket.id });
-      input.value = '';
-    }
-  });
-
-  socket.on('chat', json => {
+  socket.on('refresh', json => {
     const data = JSON.parse(json);
+    const currentRoomId = document.getElementsByClassName('current-room')[0].dataset.id;
 
+    if (currentRoomId === data.id) {
+      // Removes messages
+      messages.innerHTML = '';
+
+      data.messages.forEach(message => {
+        messages.appendChild(generateMessage(message))
+      });
+    }
+  })
+
+  const generateMessage = (data) => {
     const message = document.createElement('div');
     message.setAttribute('class', 'message');
 
@@ -107,9 +109,8 @@
     message.appendChild(author);
     message.appendChild(content);
 
-    messages.appendChild(message);
-    messages.scrollTo(0, document.body.scrollHeight);
-  });
+    return message;
+  }
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -121,6 +122,24 @@
   const formatDatePart = (part) => {
     return (part > 0 && part < 10) ? '0' + part : part;
   }
+</script>
+
+<!-- FORM HANDLING -->
+<script type="application/javascript">
+  // The *socket* object is already defined in the previous script
+  const form = document.getElementById('form-message');
+  const input = document.getElementById('input-message');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let message = input.value;
+    const currentChannel = document.getElementsByClassName('current-room')[0] || undefined;
+
+    if (message && currentChannel) {
+      socket.emit('incoming-message', { message, socketId: socket.id, roomId: currentChannel.dataset.id });
+      input.value = '';
+    }
+  });
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ import { v4 as uuid4 } from 'uuid';
 
 import { RoomInterface } from "./interfaces/RoomInterface";
 import { RoomConfigInterface } from "./interfaces/RoomConfigInterface";
+import { SocketMessage } from "./SocketMessage";
 
 export class Room implements RoomInterface
 {
@@ -11,6 +12,7 @@ export class Room implements RoomInterface
   readonly public: boolean;
   title: string;
   readonly urlImage: string | false;
+  private readonly messages: Array<SocketMessage>;
 
   constructor(config: RoomConfigInterface, isPublic: boolean = true) {
     this.id = uuid4();
@@ -19,6 +21,7 @@ export class Room implements RoomInterface
     this.title = config.title || "Dummy Server " + uuid4();
     this.urlImage = config.urlImage || false;
     this.adminId = config.adminId || false;
+    this.messages = [];
   }
 
   joinUser(userId: string): boolean
@@ -41,4 +44,11 @@ export class Room implements RoomInterface
     }
   }
 
+  getMessages = () => {
+    return this.messages;
+  }
+
+  addMessage = (message: SocketMessage) => {
+    this.messages.push(message);
+  }
 }

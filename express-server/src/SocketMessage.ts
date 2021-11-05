@@ -9,7 +9,7 @@ export class SocketMessage implements SocketMessageInterface
   readonly userId: string;
   readonly user: UserInterface;
 
-  constructor(message: string, user: UserInterface, roomId?: string) {
+  constructor(message: string, user: UserInterface, roomId: string) {
     this.msg = message;
     this.user = user;
     this.userId = user.id;

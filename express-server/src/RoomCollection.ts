@@ -1,17 +1,19 @@
 import { RoomCollectionInterface } from "./interfaces/RoomCollectionInterface";
 import { RoomInterface } from "./interfaces/RoomInterface";
+import { Room } from "./Room";
+import { SocketMessage } from "./SocketMessage";
 
 export class RoomCollection implements RoomCollectionInterface
 {
   readonly all: Array<string>;
-  readonly rooms: Array<RoomInterface>;
+  readonly rooms: Array<Room>;
 
   constructor() {
     this.all = [];
     this.rooms = [];
   }
 
-  add(room: RoomInterface): void
+  add(room: Room): void
   {
     const alreadyExists = this.rooms.indexOf(room);
 
@@ -30,7 +32,7 @@ export class RoomCollection implements RoomCollectionInterface
     }
   }
 
-  get(id: string): RoomInterface | false
+  get(id: string): Room | false
   {
     return this.rooms.find(room => room.id === id) || false;
   }
@@ -38,4 +40,33 @@ export class RoomCollection implements RoomCollectionInterface
   getAll() {
     return this.rooms;
   }
+
+  serializeOne = (room: Room) => {
+    return {
+      id: room.id,
+      title: room.title,
+      image: room.urlImage,
+      messages: this.serializeMessages(room)
+    };
+  }
+
+  serializeAll() {
+    const serialized: Array<any> = [];
+
+    this.rooms.forEach(room => {
+      serialized.push(this.serializeOne(room));
+    });
+
+    return serialized;
+  }
+
+  private serializeMessages = (room: Room): Array<any> => {
+    const serializedMessages: Array<any> = [];
+
+    room.getMessages().forEach(message => {
+      serializedMessages.push(message.serialize());
+    });
+
+    return serializedMessages;
+  };
 }

@@ -8,7 +8,6 @@ import { UserCollection } from "./UserCollection";
 import { RoomCollection } from "./RoomCollection";
 import { Room } from "./Room";
 import { Channel } from "./enum/channel";
-import { UserInterface } from "./interfaces/UserInterface";
 
 export class WebSocketServer implements WebSocketServerInterface {
   readonly server: Server;
@@ -25,8 +24,8 @@ export class WebSocketServer implements WebSocketServerInterface {
     this.onlineUsers = new UserCollection();
     this.rooms = new RoomCollection();
 
-    this._handleUserConnexions();
     this._initFakeData();
+    this._handleUserConnexions();
   }
 
   private _initFakeData = () => {
@@ -42,7 +41,9 @@ export class WebSocketServer implements WebSocketServerInterface {
   }
 
   private _handleUserConnexions = () => {
-    this.server.on('connection', (socket: Socket) => {
+    this.server.on('connection', (socket: Socket) =>
+    {
+      // Creates User instance on first connexion
       if (!this.onlineUsers.get(socket.id)) {
         const newUser = new User({id: socket.id});
         this.onlineUsers.add(newUser);
@@ -55,16 +56,13 @@ export class WebSocketServer implements WebSocketServerInterface {
 
       console.log('User ' + this._currentUser.id + ' joined the lobby ! Hurray !');
 
-      // socket.on('disconnect', (reason: string) => {
-      //   let label = 'User '  + user.id + ' just left the lobby. Bye Bye !'
-      //   if (reason) {
-      //     label += ' ' + reason;
-      //   }
-      //
-      //   console.warn(label);
-      // });
+      // Client initialization
+      socket.emit(Channel.rooms, JSON.stringify(this.rooms.serializeAll()));
 
-      socket.on('disconnect', (reason: string,) => {
+      socket.emit(Channel.refresh, JSON.stringify(this.rooms.serializeOne(this._currentRoom)));
+
+      // Client events
+      socket.on(Channel.disconnect, (reason: string,) => {
         let label = 'User ' + this._currentUser.id + ' just left the lobby. Bye Bye !'
         if (reason) {
           label += ' ' + reason;
@@ -76,16 +74,32 @@ export class WebSocketServer implements WebSocketServerInterface {
         console.warn(label);
       });
 
-      socket.on(Channel.chat, (data: { message: string, id: string }) => {
-        socket.emit('chat', JSON.stringify(
-          new SocketMessage(data.message, this._currentUser).serialize()
-        ));
+      socket.on(Channel.incomingMessage, (data: { message: string, socketId: string, roomId: string }) => {
+        const { message, socketId, roomId } = data;
+
+        const user = this.onlineUsers.get(socketId);
+        const room = this.rooms.get(roomId);
+
+        if (!(user && room)) {
+          return;
+        }
+
+        const socketMessage = new SocketMessage(message, user, roomId);
+        room.addMessage(socketMessage);
+
+        // Refreshes channel messages for every online user
+        socket.emit(Channel.refresh, JSON.stringify(this.rooms.serializeOne(room)));
+        socket.broadcast.emit(Channel.refresh, JSON.stringify(this.rooms.serializeOne(room)));
       });
 
-      socket.on(Channel.rooms, () =>{
-        socket.emit(Channel.rooms, JSON.stringify(
-          this.rooms.getAll()
-        ));
+      socket.on(Channel.roomUpdate, (roomId: string) => {
+        const room = this.rooms.get(roomId);
+        if (!room) {
+          return;
+        }
+
+        this._currentRoom = room;
+        socket.emit(Channel.refresh, JSON.stringify(this.rooms.serializeOne(this._currentRoom)));
       });
     });
   }
